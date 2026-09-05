@@ -1,0 +1,197 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Flynn Saunder</title>
+  <style>
+    /* Reset & Base Styles */
+    * {
+      box-sizing: border-box;
+      margin: 0;
+      padding: 0;
+    }
+
+    body {
+      font-family: "Helvetica Neue", Helvetica, Arial, sans-serif;
+      color: #111111;
+      background-color: #ffffff;
+      line-height: 1.6;
+      padding: 0 1.5rem;
+      -webkit-font-smoothing: antialiased;
+    }
+
+    .container {
+      max-width: 640px;
+      margin: 4rem auto;
+    }
+
+    /* Typography & Hierarchy */
+    h1 {
+      font-size: 1.75rem;
+      font-weight: 700;
+      letter-spacing: -0.02em;
+      margin-bottom: 0.25rem;
+    }
+
+    h2 {
+      font-size: 0.875rem;
+      font-weight: 700;
+      text-transform: uppercase;
+      letter-spacing: 0.08em;
+      color: #777777;
+      margin-top: 3rem;
+      margin-bottom: 1.25rem;
+      border-bottom: 1px solid #eeeeee;
+      padding-bottom: 0.5rem;
+    }
+
+    p {
+      font-size: 1rem;
+      color: #333333;
+      margin-bottom: 1rem;
+    }
+
+    a {
+      color: #111111;
+      text-decoration: underline;
+      text-underline-offset: 3px;
+    }
+
+    a:hover {
+      color: #666666;
+    }
+
+    .subtitle {
+      font-size: 1rem;
+      color: #666666;
+      margin-bottom: 2rem;
+    }
+
+    /* Item Lists (Projects, Essays, Resume) */
+    .list-item {
+      margin-bottom: 1.5rem;
+    }
+
+    .item-header {
+      display: flex;
+      justify-content: space-between;
+      align-items: baseline;
+    }
+
+    .item-title {
+      font-size: 1rem;
+      font-weight: 600;
+    }
+
+    .item-date {
+      font-size: 0.875rem;
+      color: #888888;
+    }
+
+    .item-desc {
+      font-size: 0.9375rem;
+      color: #555555;
+      margin-top: 0.25rem;
+    }
+
+    /* Footer / Links */
+    footer {
+      margin-top: 4rem;
+      padding-top: 2rem;
+      border-top: 1px solid #eeeeee;
+      font-size: 0.875rem;
+      color: #777777;
+    }
+
+    .social-links a {
+      margin-right: 1rem;
+    }
+  </style>
+</head>
+<body>
+
+  <div class="container">
+    
+    <!-- Header / About Me -->
+    <header>
+      <h1>Flynn Saunder</h1>
+      <p class="subtitle">Developer & Writer based in Australia.</p>
+      <p>
+        Welcome. I build simple digital tools and write about technology, design, and ideas. 
+        Currently exploring minimal web design and static computing.
+      </p>
+    </header>
+
+    <!-- Projects Section -->
+    <section>
+      <h2>Selected Projects</h2>
+      
+      <div class="list-item">
+        <div class="item-header">
+          <span class="item-title"><a href="#">Project One</a></span>
+          <span class="item-date">2026</span>
+        </div>
+        <p class="item-desc">A brief description of what this project does and the technology used to build it.</p>
+      </div>
+
+      <div class="list-item">
+        <div class="item-header">
+          <span class="item-title"><a href="#">Project Two</a></span>
+          <span class="item-date">2025</span>
+        </div>
+        <p class="item-desc">A short overview of another side project, tool, or repository you maintain.</p>
+      </div>
+    </section>
+
+    <!-- Essays Section -->
+    <section>
+      <h2>Essays & Writing</h2>
+      
+      <div class="list-item">
+        <div class="item-header">
+          <span class="item-title"><a href="#">On Keeping Web Design Simple</a></span>
+          <span class="item-date">Aug 2026</span>
+        </div>
+        <p class="item-desc">Thoughts on stripping away modern framework overhead for personal websites.</p>
+      </div>
+
+      <div class="list-item">
+        <div class="item-header">
+          <span class="item-title"><a href="#">Notes on Digital Systems</a></span>
+          <span class="item-date">Jun 2026</span>
+        </div>
+        <p class="item-desc">An exploration into local workflows and static content publishing.</p>
+      </div>
+    </section>
+
+    <!-- Resume Section -->
+    <section>
+      <h2>Resume & Experience</h2>
+      
+      <div class="list-item">
+        <div class="item-header">
+          <span class="item-title">Current Role / Field</span>
+          <span class="item-date">2024 — Present</span>
+        </div>
+        <p class="item-desc">Key responsibilities, skills, or focus areas in your current work.</p>
+      </div>
+
+      <p style="margin-top: 1rem;">
+        📄 <a href="resume.pdf" target="_blank">Download Full PDF Resume</a>
+      </p>
+    </section>
+
+    <!-- Footer -->
+    <footer>
+      <div class="social-links">
+        <a href="https://github.com/yourusername">GitHub</a>
+        <a href="https://linkedin.com/in/yourusername">LinkedIn</a>
+        <a href="mailto:your@email.com">Email</a>
+      </div>
+    </footer>
+
+  </div>
+
+</body>
+</html>
