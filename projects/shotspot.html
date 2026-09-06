@@ -15,7 +15,7 @@
     <p class="back"><a href="../index.html">&larr; Back to home</a></p>
 
     <h1>ShotSpot</h1>
-    <p class="project-meta">2023 &middot; VCE Software Development Units 3/4 SAT &middot; Analysis, SRS &amp; design folio &middot; VB.NET (Windows Forms), XML</p>
+    <p class="project-meta">2023 &middot; VCE Software Development Units 3/4 SAT &middot; Analysis, design, build &amp; evaluation &middot; VB.NET (Windows Forms), XML</p>
 
     <img class="cover" src="images/shotspot-input-screen.png" alt="iPad mockup of the ShotSpot shot-input screen: two grids of coloured buttons for Player A and Player B, split into Forehand and Backhand, with a live match summary panel on the right and an End Match button.">
 
@@ -33,10 +33,11 @@
       </p>
 
       <p>
-        This page covers the first half of the SAT: the analysis, the software
-        requirements specification and the design folio. The working program is
-        built in the following unit; what is shown here is the planning and
-        design that it is built from.
+        The SAT runs the whole software development process on one solution:
+        analysis and a requirements specification, a design folio, building the
+        working program in VB.NET, usability and functional testing, and an
+        evaluation of both the solution and the project plan. This page walks
+        through all of it.
       </p>
 
       <h2>The client and the brief</h2>
@@ -70,7 +71,9 @@
         chose an <strong>agile</strong> model and split the program into three
         independently buildable pieces &mdash; the loading screen, the input
         screen and the match database screen &mdash; so I could get working
-        parts in front of the client early and adjust as I went.
+        parts in front of the client early and adjust as I went. In practice the
+        build ran much closer to waterfall, for reasons I get into in the
+        evaluation below.
       </p>
 
       <h2>Software requirements specification</h2>
@@ -119,7 +122,7 @@
 
       <figure>
         <img src="images/shotspot-loading-screen.png" alt="iPad mockup of the ShotSpot loading screen, titled BTC Tennis Tracker, with a Match Info column of fields for Player A, Player B, Event, Court Surface, Games in a Set and Sets, above green Start a new match and blue Go to Match Centre buttons.">
-        <figcaption>The loading screen: enter the two players and the match details, then start recording or jump to the Match Centre.</figcaption>
+        <figcaption>The loading screen: enter the two players and the match details, then start recording.</figcaption>
       </figure>
 
       <figure>
@@ -129,7 +132,7 @@
 
       <figure>
         <img src="images/shotspot-match-centre.png" alt="iPad mockup of the ShotSpot Match Centre: a player profile card on the left with name, ID, club, matches played, location and date of birth, four key-stat tiles across the top, and a table of forehand and backhand shot types with Average, Total and percent-of-total-shots columns.">
-        <figcaption>The Match Centre: a player profile with career key stats up top and a full breakdown of every shot type by average, total and share of shots.</figcaption>
+        <figcaption>The planned Match Centre: a player profile with career key stats and a full shot-type breakdown by average, total and share of shots. This was the most ambitious screen, and the one that got cut &mdash; see the evaluation.</figcaption>
       </figure>
 
       <p>
@@ -137,19 +140,117 @@
         routines &mdash; starting a new match, adding a player, writing a tagged
         shot into the match file while updating the live counts, and rebuilding
         a player's averages and totals by reading back across every match file.
-        The data model is three objects: <code>player</code>, <code>match</code>
-        and <code>shots</code>, persisted as <code>players.xml</code> and one
-        <code>matchID.xml</code> file per match.
+        The data model started as three objects: <code>player</code>,
+        <code>match</code> and <code>shots</code>, persisted as XML.
       </p>
 
-      <h2>Where it landed</h2>
+      <h2>Building it</h2>
 
       <p>
-        The output of this half of the SAT is a complete, client-validated plan:
-        a justified development model and Gantt chart, three sets of collected
-        data, a full SRS with context and data-flow diagrams and use cases, and
-        a design folio with mockups for all three screens signed off by the
-        client. That specification is what the build phase works from.
+        The program is a VB.NET Windows Forms app of roughly 2,500 lines across
+        three forms &mdash; login, start screen and shot input &mdash; plus a
+        match-summary screen. Because an iPad's native resolution was too large
+        to display on my laptop, I built each form at a smaller 4:3 size that
+        keeps the iPad proportions. A global <code>matchClass</code> object holds
+        all the match details and the running shot counts in memory; nothing is
+        written to disk until the match ends.
+      </p>
+
+      <ul>
+        <li>
+          <strong>Shot input.</strong> 24 buttons &mdash; six outcome types
+          &times; forehand/backhand &times; two players. A click increments that
+          shot's counter and pulses the matching live-summary label green so the
+          user can see the input registered. Forehand and backhand of the same
+          outcome are summed in the live view; the full split is kept for the
+          summary.
+        </li>
+        <li>
+          <strong>Storage.</strong> On "End tracking of match" the whole
+          <code>matchClass</code> is written out as <code>match1.xml</code>,
+          <code>match2.xml</code> and so on &mdash; the file name is just a
+          counter, with no player names in it.
+        </li>
+        <li>
+          <strong>Logins.</strong> Each user gets their own username and
+          password; passwords are stored as a SHA-512 hash with a 100-character
+          random salt, never in plain text.
+        </li>
+        <li>
+          <strong>Encryption.</strong> Player names, the event and the date are
+          AES-encrypted inside the match file, so opening the raw XML tells you
+          nothing sensitive.
+        </li>
+        <li>
+          <strong>Match summary.</strong> At the end of a match the program
+          builds a formatted summary and emails it to an address the user types
+          in, via Outlook automation. This replaced the Match Centre as the way
+          to get data out of the program.
+        </li>
+      </ul>
+
+      <h2>Usability testing</h2>
+
+      <p>
+        I ran four moderated sessions with a consent form, a demographic
+        questionnaire and handwritten observation notes: two with a peer, one
+        with my 14-year-old sister as a low-experience user, and one with the
+        client, who used it live while watching a professional match on video.
+        Each round fed a list of changes back into the program. Among them:
+      </p>
+
+      <ul>
+        <li>Enter key now submits the login &mdash; every tester pressed it by habit.</li>
+        <li>You are logged straight in after creating an account, instead of signing up and then logging in.</li>
+        <li>The email field is pre-filled with a placeholder that clears when you tap it, and a "sending, please wait" message shows on click so users don't give up mid-send.</li>
+        <li>"Required" labels above the match-detail fields, so nobody hits a validation error for a blank they didn't know they had to fill.</li>
+        <li>Wording fixes from the client: "Start tracking a new match", "End tracking of match", clearer confirmation dialogs, plain-English email copy.</li>
+        <li>Most of the custom Exit buttons were removed once I saw nearly everyone used the standard window "X" instead.</li>
+      </ul>
+
+      <h2>Functional testing</h2>
+
+      <p>
+        Alongside the usability work I kept a testing table for individual
+        features. It caught real bugs: a string-length check that wasn't
+        returning <code>False</code> over 64 characters, so an over-long name
+        started a match and then corrupted the XML; and a match starting with no
+        radio button selected, fixed by defaulting each group to its most common
+        value on load. Validation covers existence, type and range on every
+        field, including the match date (no future dates, nothing before 1800).
+      </p>
+
+      <h2>Evaluation and reflection</h2>
+
+      <p>
+        <strong>What got cut.</strong> The Match Centre &mdash; loading past
+        matches back out of the XML files and showing career stats &mdash; was
+        marked borderline-scope in the SRS, and I dropped it when I came back
+        from four weeks away and saw how much was left. The emailed summary is
+        the lighter replacement.
+      </p>
+
+      <p>
+        <strong>The development model.</strong> The agile plan didn't survive
+        contact with the project. The forms were too interconnected to build and
+        sign off in isolation, and losing four weeks meant I coded almost
+        everything in one three-week block and evaluated at the end &mdash;
+        waterfall in all but name. That did keep the forms consistent with each
+        other, but it left no room to revisit earlier decisions.
+      </p>
+
+      <p>
+        <strong>Efficiency.</strong> Windows Performance Monitor and VB's
+        diagnostics put the app at around 1% average CPU and 16&ndash;21&nbsp;MB
+        of RAM, with a single ~10% CPU spike when it hands off to Outlook to send
+        the email. Light enough for any machine the club would run it on.
+      </p>
+
+      <p>
+        <strong>What I'd do differently.</strong> The clearest lesson, pointed
+        out by peers, is the 24 shot counters: they should have been an array,
+        not 24 named variables with a near-identical click handler each. It
+        works and it's fast, but it's far more code than the problem needs.
       </p>
 
     </div>
