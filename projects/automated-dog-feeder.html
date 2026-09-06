@@ -1,0 +1,276 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+
+  <title>Automated Dog Feeder | Flynn Saunder</title>
+
+  <link rel="stylesheet" href="../assets/style.css">
+</head>
+<body>
+
+  <div class="container">
+
+    <p class="back"><a href="../index.html">&larr; Back to home</a></p>
+
+    <h1>Automated Dog Feeder</h1>
+    <p class="project-meta">2024 &middot; VCE Systems Engineering Units 3/4 SAT &middot; Fusion 360, 3D Printing, Arduino, Woodwork</p>
+
+    <!-- COVER IMAGE
+         Recommended: the front 3-quarter "hero" shot of the finished feeder
+         (red 3D-printed hopper + electronics box on the navy-painted timber
+         frame, outdoors on concrete). This is the photo on the folio title
+         page / "Final Showcase" page.
+         Save it as projects/images/adf-cover.jpg -->
+    <img class="cover" src="images/adf-cover.jpg" alt="The finished dog feeder: a red 3D-printed hopper and electronics box mounted on a navy-painted timber frame, with a chute running down to a dog bowl.">
+
+    <div class="project-body">
+
+      <p>
+        This is an automatic dog feeder I designed and built for my Year&nbsp;12
+        VCE Systems Engineering School-Assessed Task in 2024 at Catherine McAuley
+        College Bendigo. The task runs the full design process on one working
+        product: brief, research, design options, a project plan, production,
+        testing and evaluation.
+      </p>
+
+      <h2>The brief</h2>
+
+      <p>
+        My client was my sister Daisy. She is the person in our family who feeds
+        our dog, Banjo, twice a day. She plays sport and is often not home at
+        feeding time, and when she forgets, nobody else knows whether Banjo has
+        been fed, so he either misses a meal or gets fed twice. I set out to
+        build a feeder that drops a measured portion into Banjo's bowl at set
+        times each day, so Daisy only has to deal with it every few days when it
+        needs a refill.
+      </p>
+
+      <p>After interviewing Daisy I set five constraints that could not be dropped:</p>
+
+      <ul>
+        <li>Dispense food from a hopper into a dog bowl. This is the core function.</li>
+        <li>Run without daily human input. The hopper and the power source both have to last several days.</li>
+        <li>Fit inside a 500&nbsp;&times;&nbsp;500&nbsp;mm footprint so it is not in the way in our shared laundry.</li>
+        <li>Sealed electronics box and hopper, with no exposed wires, so Banjo cannot chew or damage anything.</li>
+        <li>Stay under a $100 budget.</li>
+      </ul>
+
+      <p>
+        Features I noted as optional and was willing to leave out included
+        adjustable portion size and feed times, status alerts, a phone app, and
+        a backup battery.
+      </p>
+
+      <h2>Research and design options</h2>
+
+      <p>
+        I researched motors (servo, DC and stepper), microcontrollers, timing (a
+        real-time clock against the Arduino's own <code>millis()</code>
+        function), power supplies and alert hardware. I then sketched a page of
+        concepts and developed three of them into full design options, each
+        scored against my constraints:
+      </p>
+
+      <ul>
+        <li><strong>Magazine Holder:</strong> a tall gravity-fed box with a sloped floor and a servo flap. 18 out of 25.</li>
+        <li><strong>Chair:</strong> a gravity hopper feeding a funnel with a spoked paddle inside, on a chair-shaped timber frame. 21 out of 25.</li>
+        <li><strong>Trough:</strong> a wide hopper with a large flap dropping food into a long trough. 17 out of 25.</li>
+      </ul>
+
+      <p>
+        My client and I both preferred the Chair option. It had the most
+        capacity for its footprint, a sealed electronics box, and it used a
+        servo, an Arduino UNO and a clock module that I could mostly get for
+        free.
+      </p>
+
+      <!-- IMAGE
+           Recommended: the hand-drawn "Visualisations" page, or the
+           "Design Option 2 - Chair" concept sketches (front 3-quarter +
+           side view). Shows the design thinking before the build.
+           Save as projects/images/adf-design-sketches.jpg -->
+      <figure>
+        <img src="images/adf-design-sketches.jpg" alt="Hand-drawn concept sketches of the dog feeder, including the chosen chair-shaped frame with a hopper, funnel and chute.">
+        <figcaption>Early concept sketches. The chosen Chair option put the hopper above a funnel, on a chair-shaped timber frame.</figcaption>
+      </figure>
+
+      <h2>Building it</h2>
+
+      <p>
+        I modelled every custom part in Autodesk Fusion 360: hopper, lid,
+        dispensing wheel, servo mounts, axles and the feed chute. I printed them
+        in red PLA on the school's Flashforge, and printed the larger parts at
+        Bendigo Tech School, whose 220&nbsp;mm print bed meant I had to shrink
+        the hopper. The frame was scrap MDF and pine from the school woodwork
+        room.
+      </p>
+
+      <!-- IMAGE
+           Recommended: the Fusion 360 grey render showing all the 3D-printed
+           parts together (hopper, auger/paddle, chute, servo mount).
+           Save as projects/images/adf-cad-parts.jpg -->
+      <figure>
+        <img src="images/adf-cad-parts.jpg" alt="Fusion 360 render of the 3D-printed components: square hopper, dispensing part, feed chute and servo mount.">
+        <figcaption>The custom parts, modelled in Fusion 360 before printing.</figcaption>
+      </figure>
+
+      <h3>The dispensing mechanism had to change</h3>
+
+      <p>
+        This was the largest problem in the project. The 4-spoke paddle from my
+        chosen design did not work. With more than a handful of food in the
+        hopper, the kibble jammed against the funnel wall instead of being
+        pushed out. I looked at retail cereal dispensers, which are also
+        unreliable, then at industrial farm feed systems, which almost all use
+        an auger screw. I designed a 3D-printed auger, tested it first with a
+        cardboard mock-up and real dog food, and it moved food cleanly and
+        consistently.
+      </p>
+
+      <p>
+        That change flowed through the rest of the build. The auger needs to
+        spin in one direction without stopping, so my 180-degree servo was no
+        use. I switched to a continuous-rotation servo, which has its own code
+        quirks: <code>write(0)</code> to spin, <code>detach()</code> to stop.
+        The auger also ran the full length of the frame, so I redesigned the
+        hopper as a longer two-part unit and built a bigger
+        250&nbsp;&times;&nbsp;350&nbsp;mm frame to leave room for the motor.
+      </p>
+
+      <!-- IMAGE
+           Recommended: the yellow 3D-printed auger screw on its own, or the
+           cardboard mock-up test where the auger dispenses real kibble into
+           a bowl.
+           Save as projects/images/adf-auger.jpg -->
+      <figure>
+        <img src="images/adf-auger.jpg" alt="The 3D-printed auger screw being tested in a cardboard mock-up, dispensing dog food into a bowl.">
+        <figcaption>The auger screw, the fix for the jamming paddle, tested in a cardboard mock-up with real kibble.</figcaption>
+      </figure>
+
+      <h3>Electronics</h3>
+
+      <p>The system runs on:</p>
+
+      <ul>
+        <li>an <strong>Arduino UNO R3</strong> as the controller;</li>
+        <li>an <strong>Adafruit PCF8523 real-time clock</strong> so the feed times survive a power loss or reset;</li>
+        <li>a <strong>9V AC-to-DC wall supply</strong> for constant power with no maintenance;</li>
+        <li>a <strong>continuous-rotation servo</strong> driving the auger;</li>
+        <li>an <strong>ultrasonic distance sensor</strong> mounted in the hopper, pointing down at the food;</li>
+        <li>a <strong>buzzer and status LEDs</strong>. The buzzer calls Banjo at feed time, and the LEDs show whether there is more than a day of food left, about a day, or none.</li>
+      </ul>
+
+      <p>
+        My first plan was to count feeds until the hopper was empty, but that
+        does not work when the dog's portion size changes. The ultrasonic sensor
+        was a late addition. It measures the actual food level, and when the
+        distance to the food passes a set point (about 14&nbsp;cm, roughly one
+        feed left) the Arduino flags it. Everything sits in a latching printed
+        box, with the wire runs wrapped for protection.
+      </p>
+
+      <!-- IMAGE
+           Recommended: the red 3D-printed electronics box open, showing the
+           Arduino and breadboard inside; OR the navy-painted timber frame
+           mid-build (bonus points for the photo with Banjo sitting next to it).
+           Save as projects/images/adf-build.jpg -->
+      <figure>
+        <img src="images/adf-build.jpg" alt="The red 3D-printed electronics enclosure open, showing the Arduino and wiring, next to the painted timber frame.">
+        <figcaption>The sealed electronics box, and the timber frame after three coats of dark blue paint.</figcaption>
+      </figure>
+
+      <h2>Testing</h2>
+
+      <p>I ran a set of tests on the finished feeder:</p>
+
+      <ul>
+        <li>
+          <strong>Ultrasonic sensor accuracy:</strong> sensor readings against a
+          ruler across a range of food levels gave an R-squared of 0.9965,
+          accurate and precise enough to trust for level sensing.
+        </li>
+        <li>
+          <strong>Hopper capacity:</strong> a full hopper holds about 2&nbsp;kg,
+          or roughly 10 feeds, which is around 5 days between refills.
+        </li>
+        <li>
+          <strong>Dispensing time:</strong> on successful runs, a 200&nbsp;g
+          portion took an average of 15.28&nbsp;seconds, with a range of 14.4 to
+          16.2&nbsp;seconds. Consistent, and slow enough not to spill.
+        </li>
+        <li>
+          <strong>Full-feed success rate:</strong> only 5 of 20 trials
+          dispensed a complete 200&nbsp;g portion, which is 25 percent.
+        </li>
+      </ul>
+
+      <!-- IMAGE (optional)
+           Recommended: the "Ruler vs Ultrasonic Distance" scatter chart
+           with the R2 = 0.9965 trendline.
+           Save as projects/images/adf-sensor-chart.png -->
+      <figure>
+        <img src="images/adf-sensor-chart.png" alt="Scatter plot of ultrasonic sensor distance against ruler distance, with a near-perfect linear trendline, R-squared 0.9965.">
+        <figcaption>Ultrasonic sensor readings tracked the ruler almost exactly (R&sup2;&nbsp;=&nbsp;0.9965).</figcaption>
+      </figure>
+
+      <p>
+        The 25 percent success rate was the disappointing result. The cause was
+        the servo. It shares the Arduino's 5V pin with the clock module and the
+        ultrasonic sensor, so under load it cannot draw enough current and
+        stalls once the hopper is more than lightly filled. The fix is a relay
+        and a separate 9V supply for the servo, still switched by the Arduino.
+        That was too big a change to make before the submission deadline, but I
+        know what the fix is.
+      </p>
+
+      <h2>Result and reflection</h2>
+
+      <p>
+        The finished feeder measured
+        350&nbsp;&times;&nbsp;250&nbsp;&times;&nbsp;560&nbsp;mm, well inside the
+        500&nbsp;&times;&nbsp;500&nbsp;mm constraint. It cost about $50 against
+        the $100 budget, with the paint as the only real expense, and it met the
+        sealed-electronics and multi-day autonomy requirements. Against my own
+        evaluation rubric I scored it 15 out of 20, marked down for the
+        dispensing reliability.
+      </p>
+
+      <p>
+        What I am most happy with is that it looks and works like a real
+        product, and that when the first mechanism failed I worked out why,
+        researched an alternative, prototyped it cheaply and rebuilt the
+        surrounding parts to suit, while keeping the project plan on track. The
+        servo power problem is the one thing I would go back and fix, and I know
+        how to do it.
+      </p>
+
+      <!-- IMAGE (optional)
+           Recommended: the top-down "Final Showcase" photo with the hopper
+           lid off, showing the yellow auger and the Arduino inside the red
+           hopper.
+           Save as projects/images/adf-final.jpg -->
+      <figure>
+        <img src="images/adf-final.jpg" alt="Top-down view of the finished feeder with the lid removed, showing the auger screw and electronics inside the red hopper.">
+        <figcaption>The finished feeder, lid off.</figcaption>
+      </figure>
+
+      <h2>Full folio</h2>
+
+      <!-- Upload the folio PDF into the assets/ folder, named
+           automated-dog-feeder-folio.pdf, so this link works. -->
+      <p>
+        The complete SAT folio, which covers the whole design and production
+        process in detail, is available as a PDF:
+        <a href="../assets/automated-dog-feeder-folio.pdf">Automated Dog Feeder folio (PDF)</a>.
+      </p>
+
+    </div>
+
+    <p class="back" style="margin-top:3rem"><a href="../index.html">&larr; Back to home</a></p>
+
+  </div>
+
+</body>
+</html>
