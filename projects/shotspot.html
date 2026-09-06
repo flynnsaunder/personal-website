@@ -1,0 +1,162 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+
+  <title>ShotSpot — Tennis Shot-Tagging App | Flynn Saunder</title>
+
+  <link rel="stylesheet" href="../assets/style.css">
+</head>
+<body>
+
+  <div class="container">
+
+    <p class="back"><a href="../index.html">&larr; Back to home</a></p>
+
+    <h1>ShotSpot</h1>
+    <p class="project-meta">2023 &middot; VCE Software Development Units 3/4 SAT &middot; Analysis, SRS &amp; design folio &middot; VB.NET (Windows Forms), XML</p>
+
+    <img class="cover" src="images/shotspot-input-screen.png" alt="iPad mockup of the ShotSpot shot-input screen: two grids of coloured buttons for Player A and Player B, split into Forehand and Backhand, with a live match summary panel on the right and an End Match button.">
+
+    <div class="project-body">
+
+      <p>
+        ShotSpot is a tennis match shot-tagging application I designed for my
+        Year&nbsp;12 VCE Software Development School-Assessed Task in 2023 at
+        Catherine McAuley College Bendigo. The user watches a replay of a match
+        and taps a button for how each point ended &mdash; a forehand winner, a
+        backhand unforced error into the net, and so on &mdash; and the program
+        collates those data points into a match summary and a running player
+        profile, so players and coaches can see which parts of their game are
+        costing them points.
+      </p>
+
+      <p>
+        This page covers the first half of the SAT: the analysis, the software
+        requirements specification and the design folio. The working program is
+        built in the following unit; what is shown here is the planning and
+        design that it is built from.
+      </p>
+
+      <h2>The client and the brief</h2>
+
+      <p>
+        My client was the Bendigo Tennis Club, which I worked with through its
+        president, Damien Saunder. The club wanted something that recreational
+        and club players &mdash; from C Grade up to A Grade &mdash; could use
+        without much computer experience, since a survey I ran through the
+        club's WhatsApp group (18 responses) showed that a perceived lack of
+        computer skills was the main thing putting members off using analysis
+        tools at all. Almost everyone surveyed played at least once a week, so
+        the app needed to suit regular use.
+      </p>
+
+      <p>To gather requirements I used three data collection methods:</p>
+
+      <ul>
+        <li>a written interview with the client, answered in their own time and returned to me;</li>
+        <li>an 18-response Google Form survey of club members, on features, dislikes and non-functional wants;</li>
+        <li>desktop research into usability and accessibility, which fed directly into the interface decisions below.</li>
+      </ul>
+
+      <h2>Choosing a development model</h2>
+
+      <p>
+        I compared the waterfall, spiral and agile models. Waterfall was too
+        rigid for a project this long and gave the client too few chances to
+        feed back; spiral was heavier than a project this size warranted and its
+        open-ended number of phases made the deadline hard to plan against. I
+        chose an <strong>agile</strong> model and split the program into three
+        independently buildable pieces &mdash; the loading screen, the input
+        screen and the match database screen &mdash; so I could get working
+        parts in front of the client early and adjust as I went.
+      </p>
+
+      <h2>Software requirements specification</h2>
+
+      <p>
+        The SRS set the scope. The prototype targets a Windows Forms app written
+        in VB.NET on my school laptop, with the form canvas sized to an iPad
+        screen because the intended final environment is an iPad (7th generation
+        or later) with touch input. Data is stored locally in XML files, with no
+        network dependency.
+      </p>
+
+      <p>The functional requirements the program has to meet:</p>
+
+      <ul>
+        <li>enter names for Player&nbsp;A and Player&nbsp;B;</li>
+        <li>enter match details &mdash; event, court surface and match format;</li>
+        <li>show live match stats while points are being recorded;</li>
+        <li>record how each point ended on the forehand or backhand side: winner, winner passing shot, unforced error (out or netted) and forced error (out or netted);</li>
+        <li>retrieve details of previous matches in a separate interface;</li>
+        <li>retrieve career and season totals and averages through search.</li>
+      </ul>
+
+      <p>
+        The main non-functional requirements were fast, reliable reading and
+        writing of the stats files; per-player privacy so one player cannot look
+        up another's stats; and a user-friendly interface with large buttons,
+        tooltips and a help menu. Scope was kept deliberately tight with a
+        MoSCoW list &mdash; file encryption and multi-platform support were
+        explicitly ruled out for the time available.
+      </p>
+
+      <h2>Design folio</h2>
+
+      <p>
+        My accessibility and usability research drove most of the interface
+        decisions. Square buttons beat circular ones because a larger click
+        target is the difference between a hit and a mis-tap when you are
+        logging shots quickly. Large text and strong colour differentiation help
+        visually impaired users. Forehand and backhand shots are colour-coded
+        (pink and blue), Player&nbsp;A's buttons are filled and Player&nbsp;B's
+        are outlined, and every screen shares one colour scheme and typeface so
+        the user is not disoriented moving between them. The aim was the fewest
+        buttons and words that still make each action obvious.
+      </p>
+
+      <figure>
+        <img src="images/shotspot-loading-screen.png" alt="iPad mockup of the ShotSpot loading screen, titled BTC Tennis Tracker, with a Match Info column of fields for Player A, Player B, Event, Court Surface, Games in a Set and Sets, above green Start a new match and blue Go to Match Centre buttons.">
+        <figcaption>The loading screen: enter the two players and the match details, then start recording or jump to the Match Centre.</figcaption>
+      </figure>
+
+      <figure>
+        <img src="images/shotspot-input-screen.png" alt="iPad mockup of the ShotSpot shot-input screen with coloured Forehand and Backhand button grids for each player and a live match summary table on the right.">
+        <figcaption>The input screen. Each button is one point outcome; the panel on the right updates the live match summary as points are tagged.</figcaption>
+      </figure>
+
+      <figure>
+        <img src="images/shotspot-match-centre.png" alt="iPad mockup of the ShotSpot Match Centre: a player profile card on the left with name, ID, club, matches played, location and date of birth, four key-stat tiles across the top, and a table of forehand and backhand shot types with Average, Total and percent-of-total-shots columns.">
+        <figcaption>The Match Centre: a player profile with career key stats up top and a full breakdown of every shot type by average, total and share of shots.</figcaption>
+      </figure>
+
+      <p>
+        The folio also included a data dictionary and pseudocode for the core
+        routines &mdash; starting a new match, adding a player, writing a tagged
+        shot into the match file while updating the live counts, and rebuilding
+        a player's averages and totals by reading back across every match file.
+        The data model is three objects: <code>player</code>, <code>match</code>
+        and <code>shots</code>, persisted as <code>players.xml</code> and one
+        <code>matchID.xml</code> file per match.
+      </p>
+
+      <h2>Where it landed</h2>
+
+      <p>
+        The output of this half of the SAT is a complete, client-validated plan:
+        a justified development model and Gantt chart, three sets of collected
+        data, a full SRS with context and data-flow diagrams and use cases, and
+        a design folio with mockups for all three screens signed off by the
+        client. That specification is what the build phase works from.
+      </p>
+
+    </div>
+
+    <p class="back" style="margin-top:3rem"><a href="../index.html">&larr; Back to home</a></p>
+
+  </div>
+
+</body>
+</html>
